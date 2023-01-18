@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Hello world!
@@ -54,82 +56,87 @@ public final class App {
 
         System.out.println("Waiting for connection...");
 
-        ServerSocket ss = new ServerSocket(3032);
-        Socket s = ss.accept(); // establish connection and waiting for client to connect
-        System.out.println("connected");
+        // ServerSocket ss = new ServerSocket(3032);
+        CookieClientHandler cookieRI = new CookieClientHandler(3032, dirPath, fileName);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(cookieRI);
+        executorService.shutdown();
+        // Socket s = ss.accept(); // establish connection and waiting for client to
+        // connect
+        // System.out.println("connected");
 
-        try {
-            InputStream is = s.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            DataInputStream dis = new DataInputStream(bis);
+        // try {
+        // InputStream is = s.getInputStream();
+        // BufferedInputStream bis = new BufferedInputStream(is);
+        // DataInputStream dis = new DataInputStream(bis);
 
-            OutputStream os = s.getOutputStream();
-            BufferedOutputStream bos = new BufferedOutputStream(os);
-            DataOutputStream dos = new DataOutputStream(bos);
+        // OutputStream os = s.getOutputStream();
+        // BufferedOutputStream bos = new BufferedOutputStream(os);
+        // DataOutputStream dos = new DataOutputStream(bos);
 
-            String msgReceived = "";
+        // String msgReceived = "";
 
-            while (!msgReceived.equals("close")) {
-                msgReceived = dis.readUTF();
+        // while (!msgReceived.equals("close")) {
+        // msgReceived = dis.readUTF();
 
-                if (msgReceived.equalsIgnoreCase("get-cookie")) {
-                    String cookieValue = cookie.returnCookies();
-                    System.out.println(cookieValue);
+        // if (msgReceived.equalsIgnoreCase("get-cookie")) {
+        // String cookieValue = cookie.returnCookies();
+        // System.out.println(cookieValue);
 
-                    dos.writeUTF(cookieValue);
-                    dos.flush();
+        // dos.writeUTF(cookieValue);
+        // dos.flush();
 
-                } else {
-                    dos.writeUTF("No such commands");
-                    dos.flush();
-                }
+        // } else {
+        // dos.writeUTF("No such commands");
+        // dos.flush();
+        // }
 
-            }
+        // }
 
-            // try (OutputStream os = s.getOutputStream()) {
+        // try (OutputStream os = s.getOutputStream()) {
 
-            // BufferedOutputStream bos = new BufferedOutputStream(os);
-            // DataOutputStream dos = new DataOutputStream(bos);
+        // BufferedOutputStream bos = new BufferedOutputStream(os);
+        // DataOutputStream dos = new DataOutputStream(bos);
 
-            // while (!msgReceived.equals("close")) {
-            // msgReceived = dis.readUTF();
+        // while (!msgReceived.equals("close")) {
+        // msgReceived = dis.readUTF();
 
-            // if (msgReceived.equalsIgnoreCase("get-cookie")) {
-            // String cookieValue = cookie.returnCookies();
-            // System.out.println(cookieValue);
+        // if (msgReceived.equalsIgnoreCase("get-cookie")) {
+        // String cookieValue = cookie.returnCookies();
+        // System.out.println(cookieValue);
 
-            // dos.writeUTF(cookieValue);
-            // dos.flush();
+        // dos.writeUTF(cookieValue);
+        // dos.flush();
 
-            // } else {
-            // dos.writeUTF("No such commands");
-            // dos.flush();
-            // }
+        // } else {
+        // dos.writeUTF("No such commands");
+        // dos.flush();
+        // }
 
-            // }
-            // dos.close();
-            // bos.close();
-            // os.close();
-            // }
+        // }
+        // dos.close();
+        // bos.close();
+        // os.close();
+        // }
 
-            // catch (EOFException e) {
+        // catch (EOFException e) {
 
-            // s.close();
-            // ss.close();
+        // s.close();
+        // ss.close();
 
-            // }
+        // }
 
-            dos.close();
-            bos.close();
-            os.close();
+        // dos.close();
+        // bos.close();
+        // os.close();
 
-            bis.close();
-            dis.close();
-            is.close();
+        // bis.close();
+        // dis.close();
+        // is.close();
 
-        } catch (IOException e) {
-            s.close();
-            ss.close();
-        }
+        // } catch (IOException e) {
+        // s.close();
+        // ss.close();
+        // }
     }
 }
